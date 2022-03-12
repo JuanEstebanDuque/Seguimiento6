@@ -35,7 +35,7 @@ public class VallasData implements Serializable{
 		double area;
 		for(int i=0;i<vallas.size();i++) {
 			area = vallas.get(i).getWidth() * vallas.get(i).getHeight();
-			if(area > 200.000) {
+			if(area > 200000) {
 				dangerousVallas.add(vallas.get(i));
 			}
 		}
@@ -75,7 +75,7 @@ public class VallasData implements Serializable{
 			double area;
 			for(int i=0;i<vallas.size();i++) {
 				area = vallas.get(i).getWidth() * vallas.get(i).getHeight();
-				if(area > 200.000) {
+				if(area > 200000) {
 					dangerousVallas.add(vallas.get(i));
 				}
 			}
@@ -112,7 +112,7 @@ public class VallasData implements Serializable{
 			double area;
 			for(int i=0;i<vallas.size();i++) {
 				area = vallas.get(i).getWidth() * vallas.get(i).getHeight();
-				if(area > 200.000) {
+				if(area > 200000) {
 					dangerousVallas.add(vallas.get(i));
 				}
 			}
@@ -135,7 +135,7 @@ public class VallasData implements Serializable{
 		System.out.println("Total de vallas: "+counter);
 	}
 	
-	public void mostrarVallasPeligrosas() {
+	public void mostrarVallasPeligrosas() throws IOException {
 		System.out.print(
 			"===========================\n"+
 			"DANGEROUS BILLBOARD REPORT\n"+
@@ -144,8 +144,40 @@ public class VallasData implements Serializable{
 		int counter = 0;
 		for (Vallas v : dangerousVallas) {
 			double area = dangerousVallas.get(counter).getHeight() * dangerousVallas.get(counter).getWidth();
-			System.out.println("Billboard <"+dangerousVallas.get(counter).getBrand()+"> with area <"+area+">");
+			System.out.println("Billboard <"+dangerousVallas.get(counter).getBrand()+"> with area <"+area+">.");
 			counter++;
 		}
 	}
+	
+	//Se intentó hacer que el documento txt no reescribiera las mismas vallas en peligrosidad que ya estaban.
+	
+	public void loadTXT() throws IOException {
+		String path = "C:\\Users\\Juan Esteban Duque\\Desktop\\TRABAJOS JUAN\\GIT\\SecretariaMovilidad\\dangerousVallas.txt";
+		File file = new File(path);
+		String data = "";
+		String line = "";
+		String test = "";
+		FileInputStream fis = new FileInputStream(file);
+		InputStreamReader isr = new InputStreamReader(fis);
+		BufferedReader reader = new BufferedReader(isr);
+		//int counter = 1;
+		double area;
+		while ((line = reader.readLine()) != null) {
+			data += line + "\n";
+			//test += line + "\n";
+			//area = dangerousVallas.get(counter).getHeight() * dangerousVallas.get(counter).getWidth();
+			/*if (!test.equalsIgnoreCase("Billboard <"+dangerousVallas.get(counter).getBrand()+"> with area <"+area+">.\n")) {
+				data += line + "\n";
+			}*/
+			//counter++;
+		}
+		fis.close();
+		for(int i=0;i<dangerousVallas.size();i++) {
+			area = dangerousVallas.get(i).getHeight() * dangerousVallas.get(i).getWidth();
+			data += "Billboard <"+dangerousVallas.get(i).getBrand()+"> with area <"+area+">.\n";
+		}
+		FileOutputStream fos = new FileOutputStream(file);
+		fos.write(data.getBytes());
+		fos.close();
+	}	
 }

@@ -1,6 +1,7 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 import model.Vallas;
@@ -11,7 +12,8 @@ public class Main {
 	public static Scanner lector = new Scanner(System.in);
 	public static VallasData data = new VallasData();
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		//data.saveJSON();
 		data.loadJSON();
 		
 		int opt;
@@ -75,8 +77,20 @@ public class Main {
 		data.mostrarVallas();
 	}
 	
-	public static void reportePeligrosidad() {
+	public static void reportePeligrosidad() throws IOException {
 		data.mostrarVallasPeligrosas();
+		System.out.println("¿Desea agregar estas vallas al documento TXT?\n"+
+			"Recuerde que si ya están añadidas se volverán a añadir."	
+			);
+		String option = lector.nextLine();
+		if(option.equalsIgnoreCase("si")) {
+			data.loadTXT();
+			System.out.println("Vallas añadidas al documento.");
+		}else if (option.equalsIgnoreCase("no")){
+			System.out.println("Vallas no añadidas al documento.");
+		}else {
+			System.out.println("Error. Opción incorrecta.");
+		}
 	}
 	
 }
